@@ -1,5 +1,6 @@
 package com.example.project1.view
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
 import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
@@ -54,8 +56,10 @@ class LoginFragment : Fragment() {
 
                 override fun onAuthenticationFailed() {
                     super.onAuthenticationFailed()
-                    Toast.makeText(requireContext(), getString(R.string.autenticaci_n_fallida),
-                        Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        requireContext(), getString(R.string.autenticaci_n_fallida),
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
             })
@@ -67,11 +71,55 @@ class LoginFragment : Fragment() {
             .build()
 
         binding.imgFinger.setOnClickListener {
-            biometricPrompt.authenticate(promptInfo)
+            if (checkDeviceHasBiometric()) {
+                biometricPrompt.authenticate(promptInfo)
+            }
         }
 
+        binding.button.setOnClickListener {
+            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
+        }
 
         return view
+    }
+
+    private val biometricLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+
+        } else {
+
+        }
+    }
+
+    private fun checkDeviceHasBiometric(): Boolean {
+        val biometricManager = BiometricManager.from(requireContext())
+        var available = false
+        when (biometricManager.canAuthenticate(BIOMETRIC_STRONG or DEVICE_CREDENTIAL)) {
+            BiometricManager.BIOMETRIC_SUCCESS -> {
+                Log.e("MY_APP_TAG", "test1")
+                available = true
+
+            }
+            BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
+                Log.e("MY_APP_TAG", "Dispositivo sin sensor biométrico.")
+
+            }
+            BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE -> {
+                Log.e("MY_APP_TAG", "Características biométricas no disponibles")
+
+            }
+            BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
+                biometricLauncher.launch(Intent(Settings.ACTION_BIOMETRIC_ENROLL).apply {
+                    putExtra(Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
+                        BIOMETRIC_STRONG or DEVICE_CREDENTIAL)
+                })
+            }
+            else -> {
+                Log.e("MY_APP_TAG", "test")
+            }
+
+        }
+        return available
     }
 
 }
