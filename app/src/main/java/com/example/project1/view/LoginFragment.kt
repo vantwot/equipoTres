@@ -44,6 +44,11 @@ class LoginFragment : Fragment() {
                     errString: CharSequence,
                 ) {
                     super.onAuthenticationError(errorCode, errString)
+                    Toast.makeText(
+                        requireContext(), "Error de autenticación: ${errString}",
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
                 }
 
                 override fun onAuthenticationSucceeded(
@@ -94,7 +99,7 @@ class LoginFragment : Fragment() {
     private fun checkDeviceHasBiometric(): Boolean {
         val biometricManager = BiometricManager.from(requireContext())
         var available = false
-        when (biometricManager.canAuthenticate(BIOMETRIC_STRONG or DEVICE_CREDENTIAL)) {
+        when (biometricManager.canAuthenticate(BIOMETRIC_STRONG )) {
             BiometricManager.BIOMETRIC_SUCCESS -> {
                 Log.e("MY_APP_TAG", "test1")
                 available = true
@@ -109,6 +114,7 @@ class LoginFragment : Fragment() {
 
             }
             BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
+                Log.e("MY_APP_TAG", "test3")
                 biometricLauncher.launch(Intent(Settings.ACTION_BIOMETRIC_ENROLL).apply {
                     putExtra(Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
                         BIOMETRIC_STRONG or DEVICE_CREDENTIAL)
