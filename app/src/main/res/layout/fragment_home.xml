@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".view.HomeFragment" >
 
     <TextView
@@ -15,4 +16,62 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="73dp"
+        android:layout_height="73dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:backgroundTint="@color/bottom"
+        android:checkable="true"
+        app:cornerRadius="10dp"
+        app:icon="@android:drawable/ic_input_add"
+        app:iconPadding="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintMarginBottom="16dp"
+        app:layout_constraintMarginEnd="16dp" />
+
+    <FrameLayout
+        android:layout_width="419dp"
+        android:layout_height="195dp"
+        android:background="@color/dark_gray"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="-4dp"
+        tools:layout_editor_absoluteY="-2dp">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="95dp"
+            android:layout_height="117dp"
+            android:layout_marginLeft="300dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/login_dog" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="330dp"
+            android:layout_marginTop="135dp"
+            android:fontFamily="@font/lilitaone_regular"
+            android:text="TextView"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            tools:text="@string/dogapp" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="254dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="50dp"
+            android:fontFamily="@font/lilitaone_regular"
+            android:text="TextView"
+            android:textColor="@color/white"
+            android:textSize="35dp"
+            tools:text="@string/Administra" />
+    </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

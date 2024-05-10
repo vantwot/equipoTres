@@ -6,4 +6,5 @@
     <string name="cancelar">Cancelar</string>
     <string name="autenticaci_n_fallida">Autenticación fallida</string>
     <string name="dogapp">DogApp</string>
+    <string name="Administra">Administrador de citas</string>
 </resources>
