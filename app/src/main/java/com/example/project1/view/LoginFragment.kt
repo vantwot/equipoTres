@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
+import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_WEAK
 import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
@@ -81,18 +82,14 @@ class LoginFragment : Fragment() {
             }
         }
 
-        binding.button.setOnClickListener {
-            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
-        }
-
         return view
     }
 
     private val biometricLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-
+            Log.e("MY_APP_TAG", "Correct")
         } else {
-
+            Log.e("MY_APP_TAG", "Error")
         }
     }
 
@@ -101,7 +98,6 @@ class LoginFragment : Fragment() {
         var available = false
         when (biometricManager.canAuthenticate(BIOMETRIC_STRONG )) {
             BiometricManager.BIOMETRIC_SUCCESS -> {
-                Log.e("MY_APP_TAG", "test1")
                 available = true
 
             }
@@ -114,14 +110,14 @@ class LoginFragment : Fragment() {
 
             }
             BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
-                Log.e("MY_APP_TAG", "test3")
+
                 biometricLauncher.launch(Intent(Settings.ACTION_BIOMETRIC_ENROLL).apply {
                     putExtra(Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
-                        BIOMETRIC_STRONG or DEVICE_CREDENTIAL)
+                        BIOMETRIC_STRONG or BIOMETRIC_WEAK)
                 })
             }
             else -> {
-                Log.e("MY_APP_TAG", "test")
+                Log.e("MY_APP_TAG", "error")
             }
 
         }
