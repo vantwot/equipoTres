@@ -30,8 +30,8 @@
         app:iconPadding="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintMarginBottom="16dp"
-        app:layout_constraintMarginEnd="16dp" />
+
+        />
 
     <FrameLayout
         android:layout_width="419dp"
