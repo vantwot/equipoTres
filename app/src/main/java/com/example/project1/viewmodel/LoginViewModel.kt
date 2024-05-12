@@ -40,6 +40,7 @@ class LoginViewModel: ViewModel() {
         promptInfo = createPromptInfo(host.requireContext())
     }
 
+
     private fun createPromptInfo(context: Context): BiometricPrompt.PromptInfo {
         return BiometricPrompt.PromptInfo.Builder()
             .setTitle(context.getString(R.string.autenticaci_n_con_biometr_a))
@@ -70,8 +71,8 @@ class LoginViewModel: ViewModel() {
 
 
 
-    private fun checkDeviceHasBiometric(host: Fragment): Boolean {
-        val biometricManager = BiometricManager.from(host.requireContext())
+    private fun checkDeviceHasBiometric(context: Context): Boolean {
+        val biometricManager = BiometricManager.from(context)
         var available = false
         when (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG)) {
             BiometricManager.BIOMETRIC_SUCCESS -> {
@@ -104,8 +105,8 @@ class LoginViewModel: ViewModel() {
     }
 
 
-    fun handleFingerClick(host: Fragment) {
-        if (checkDeviceHasBiometric(host)) {
+    fun handleFingerClick(context: Context) {
+        if (checkDeviceHasBiometric(context)) {
             biometricPrompt.authenticate(promptInfo)
         }
     }

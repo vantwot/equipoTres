@@ -58,7 +58,7 @@ class LoginFragment : Fragment() {
         })
 
         binding.imgFinger.setOnClickListener {
-            viewModel.handleFingerClick(this)
+            viewModel.handleFingerClick(requireContext())
         }
     }
 
