@@ -95,13 +95,16 @@
         />
 
     <FrameLayout
-        android:layout_width="419dp"
+        android:layout_width="match_parent"
         android:layout_height="195dp"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="-4dp"
         tools:layout_editor_absoluteY="-2dp"
         android:background="@drawable/tooltbar_view"
         app:layout_constraintBottom_toBottomOf="@id/guideline1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+
         >
 
         <ImageView
@@ -113,6 +116,7 @@
             android:src="@drawable/login_dog"
             app:layout_constraintBottom_toBottomOf="@id/guideline2"
             app:layout_constraintStart_toStartOf="@id/guideline2"
+            app:layout_constraintEnd_toEndOf="parent"
             />
 
         <TextView

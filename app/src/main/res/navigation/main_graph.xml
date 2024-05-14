@@ -11,7 +11,7 @@
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
-            android:id="@+id/action_loginFragment_to_homeFragment"
+            android:id="@+id/action_loginFragment_to_editAppointmentFragment"
             app:destination="@id/homeFragment" />
     </fragment>
     <fragment
@@ -23,10 +23,11 @@
             android:id="@+id/action_homeFragment_to_createFragment"
             app:destination="@id/createFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/createFragment"
-        android:name="com.example.project1.view.HomeFragment"
-        android:label="fragment_home"
+        android:name="com.example.project1.view.CreateFragment"
+        android:label="fragment_create"
         tools:layout="@layout/fragment_create">
     </fragment>
     <fragment
