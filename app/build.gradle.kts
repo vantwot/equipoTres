@@ -34,9 +34,8 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-
     buildFeatures {
-        viewBinding = true
+        dataBinding = true
     }
 }
 
@@ -58,6 +57,19 @@ dependencies {
     val navVersion = "2.7.0"
     implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
+
+    //Fragmentos
+    val fragment_version = "1.7.0"
+    implementation("androidx.fragment:fragment-ktx:$fragment_version")
+
+    //User interface components
+    val materialVersion= "1.4.0"
+    implementation("com.google.android.material:material:$materialVersion")
+
+    //retrofit library
+    val retrofitVersion = "2.9.0"
+    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
+    implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
 
     //lottiejson
     val lottieVersion = "3.4.0"
