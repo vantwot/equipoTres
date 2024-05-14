@@ -13,6 +13,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.project1.R
@@ -95,8 +96,8 @@ class FragmentEditAppointment : Fragment() {
 
     private fun updateButtonState() {
         if (btnEdit.isEnabled) {
-            btnEdit.setTextColor(Color.GRAY)
-            btnEdit.setBackgroundResource(R.color.strong_pink)
+            btnEdit.setTextColor(Color.BLACK)
+            btnEdit.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.strong_pink))
         } else {
             btnEdit.setTextColor(Color.GRAY)
             btnEdit.setBackgroundColor(Color.LTGRAY)

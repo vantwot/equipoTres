@@ -50,7 +50,7 @@ class LoginFragment : Fragment() {
             }
 
             override fun onAuthenticationSucceeded() {
-                findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToEditAppointmentFragment())
+                findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
             }
 
             override fun onAuthenticationFailed() {
