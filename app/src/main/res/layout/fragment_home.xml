@@ -41,10 +41,10 @@
     <FrameLayout
         android:layout_width="419dp"
         android:layout_height="195dp"
-        android:background="@color/dark_gray"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="-4dp"
-        tools:layout_editor_absoluteY="-2dp">
+        tools:layout_editor_absoluteY="-2dp"
+        android:background="@drawable/tooltbar_view">
 
         <ImageView
             android:id="@+id/imageView2"
@@ -61,7 +61,7 @@
             android:layout_marginLeft="330dp"
             android:layout_marginTop="135dp"
             android:fontFamily="@font/lilitaone_regular"
-            android:text="TextView"
+            android:text="@string/dogapp"
             android:textColor="@color/white"
             android:textSize="20dp"
             tools:text="@string/dogapp" />
@@ -73,10 +73,10 @@
             android:layout_marginLeft="40dp"
             android:layout_marginTop="50dp"
             android:fontFamily="@font/lilitaone_regular"
-            android:text="TextView"
+            android:text="@string/Administra"
             android:textColor="@color/white"
-            android:textSize="35dp"
-            tools:text="@string/Administra" />
+            android:textSize="35dp" />
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+    </layout>
