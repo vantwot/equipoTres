@@ -79,15 +79,32 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.7" />
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.1" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.96" />
+
         <include
             android:id="@+id/contentToolbar"
-            layout="@layout/edit_toolbar"/>
+            layout="@layout/edit_toolbar"
+            app:layout_constraintStart_toEndOf="@id/guideline10"
+            app:layout_constraintEnd_toStartOf="@id/guideline11"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="Nombre de la mascota"
+            app:hintTextColor="@color/grey"
             app:layout_constraintTop_toTopOf="@id/guideline1"
             app:layout_constraintStart_toEndOf="@id/guideline5"
             app:layout_constraintEnd_toStartOf="@id/guideline6">
@@ -106,6 +123,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="Raza"
+            app:hintTextColor="@color/grey"
             app:layout_constraintTop_toTopOf="@id/guideline2"
             app:layout_constraintStart_toStartOf="@id/guideline5"
             app:layout_constraintEnd_toStartOf="@id/guideline6">
@@ -124,6 +142,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="Nombre del propietario"
+            app:hintTextColor="@color/grey"
             app:layout_constraintTop_toTopOf="@id/guideline3"
             app:layout_constraintStart_toEndOf="@id/guideline5"
             app:layout_constraintEnd_toStartOf="@id/guideline6">
@@ -142,6 +161,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="Telefono"
+            app:hintTextColor="@color/grey"
             app:layout_constraintTop_toTopOf="@id/guideline4"
             app:layout_constraintStart_toStartOf="@id/guideline5"
             app:layout_constraintEnd_toEndOf="@id/guideline6">
@@ -161,13 +181,12 @@
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:text="Editar cita"
-            android:drawableLeft="@mipmap/ic_pencil"
-            android:background="@color/strong_pink"
-            app:layout_constraintTop_toTopOf="@id/guideline7"
+            android:textColor="@color/dark_gray"
             android:layout_gravity="center_horizontal"
+            android:enabled="false"
+            app:layout_constraintTop_toTopOf="@id/guideline7"
             app:layout_constraintStart_toStartOf="@id/guideline8"
             app:layout_constraintEnd_toEndOf="@id/guideline9"/>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

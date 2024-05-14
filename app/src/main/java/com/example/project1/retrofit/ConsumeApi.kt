@@ -1,4 +1,4 @@
-package com.example.project1
+package com.example.project1.retrofit
 
 import retrofit2.Call
 import retrofit2.http.GET
