@@ -182,6 +182,7 @@
             android:layout_height="48dp"
             android:text="Editar cita"
             android:textColor="@color/dark_gray"
+            android:textSize="15dp"
             android:layout_gravity="center_horizontal"
             android:enabled="false"
             app:icon="@mipmap/ic_pencil_foreground"

@@ -1,6 +1,7 @@
 package com.example.project1.view
 
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -96,7 +97,8 @@ class FragmentEditAppointment : Fragment() {
 
     private fun updateButtonState() {
         if (btnEdit.isEnabled) {
-            btnEdit.setTextColor(Color.BLACK)
+            btnEdit.setTextColor(Color.WHITE)
+            btnEdit.setTypeface(null, Typeface.BOLD)
             btnEdit.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.strong_pink))
         } else {
             btnEdit.setTextColor(Color.GRAY)
