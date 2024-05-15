@@ -9,5 +9,4 @@ import androidx.room.RoomDatabase
 )
 abstract class AppointmentDB : RoomDatabase() {
     abstract fun appointmentDao(): AppointmentDao
-
 }
