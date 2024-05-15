@@ -16,13 +16,18 @@ import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.project1.R
 import com.example.project1.retrofit.Breed
 import com.example.project1.retrofit.RetrofitClient
 import com.example.project1.databinding.FragmentEditAppointmentBinding
+import com.example.project1.room.Appointment
 import com.example.project1.room.AppointmentApp
 import com.example.project1.room.AppointmentDB
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -36,7 +41,7 @@ class FragmentEditAppointment : Fragment() {
     private var _binding: FragmentEditAppointmentBinding? = null
     private  val binding get() = _binding!!
 
-    val ERROR_MESSAGE = "Ocurrio un error"
+    val ERROR_MESSAGE = "Ocurrió un error!"
 
     lateinit var field_name : EditText
     lateinit var field_breed : EditText
@@ -44,7 +49,7 @@ class FragmentEditAppointment : Fragment() {
     lateinit var field_tel : EditText
     lateinit var btnEdit : Button
 
-    val app = requireContext().applicationContext as AppointmentApp
+    lateinit var app: AppointmentApp
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,12 +57,22 @@ class FragmentEditAppointment : Fragment() {
     ): View? {
         _binding = FragmentEditAppointmentBinding.inflate(inflater, container, false)
 
+        // Asignación de variables
         field_name = binding.editTextName
         field_breed = binding.editTextBreed
         field_owner = binding.editTextOwner
         field_tel = binding.editTextTelephone
         btnEdit = binding.editButton
 
+        // Obtener la instancia de la aplicación de la base de datos de citas (AppointmentApp)
+        val applicationContext = requireContext().applicationContext
+        if (applicationContext is AppointmentApp) {
+            app = applicationContext
+        } else {
+            Toast.makeText(requireContext(), "Error: No se pudo obtener la aplicación", Toast.LENGTH_SHORT).show()
+        }
+
+        // Funciones necesarias
         getBreeds()
         setToolbar()
         eventInputs()
@@ -143,29 +158,44 @@ class FragmentEditAppointment : Fragment() {
 
         btnEdit.setOnClickListener {
             updateAppointment()
-            //Toast.makeText(requireContext(), "No se ha implementado esta parte", Toast.LENGTH_SHORT).show()
         }
     }
 
+    private fun getAppointmentById(id: Int): LiveData<Appointment> {
+        val appointmentLiveData = MutableLiveData<Appointment>()
+        lifecycleScope.launch {
+            val appointment = app.room.appointmentDao().getAppointmentById(id)
+            appointmentLiveData.postValue(appointment)
+        }
+        return appointmentLiveData
+    }
+
     private fun updateAppointment() {
+
         // Get updated appointment data from EditTexts
         val updatedName = field_name.text.toString()
         val updatedBreed = field_breed.text.toString()
         val updatedOwner = field_owner.text.toString()
         val updatedTelephone = field_tel.text.toString()
 
-        // Update appointment object with new data
-//        currentAppointment.apply {
-//            name_pet = updatedName
-//            breed = updatedBreed
-//            name_owner = updatedOwner
-//            phone_number = updatedTelephone
-//        }
+        val appointmentId = id
 
-        // Update appointment in the database
-//        app.room.appointmentDao().updateAppointment()
+        lifecycleScope.launch {
+            // Get the appointment that needs to be updated
+            val appointment = app.room.appointmentDao().getAppointmentById(appointmentId)
+            // Create a new Appointment object with updated data
+            val updatedAppointment = appointment.copy(
+                name_pet = updatedName,
+                breed = updatedBreed,
+                name_owner = updatedOwner,
+                phone_number = updatedTelephone
+            )
+            // Update the appointment in the database
+            app.room.appointmentDao().updateAppointment(updatedAppointment)
+        }
 
-        // Navigate back to previous Fragment
-        findNavController().navigateUp()
+          // Navigate to previous Detail Fragment
+          findNavController().navigateUp()
+
     }
 }

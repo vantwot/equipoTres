@@ -12,7 +12,7 @@ interface AppointmentDao {
     suspend fun getAll():List<Appointment>
 
     @Query("SELECT * FROM Appointment WHERE id = :id")
-    suspend fun getById(id: Int): Appointment
+    suspend fun getAppointmentById(id: Int): Appointment
 
     @Update
     suspend fun updateAppointment(appointment: Appointment)
