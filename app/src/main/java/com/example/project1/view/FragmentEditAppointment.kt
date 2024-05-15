@@ -21,6 +21,8 @@ import com.example.project1.R
 import com.example.project1.retrofit.Breed
 import com.example.project1.retrofit.RetrofitClient
 import com.example.project1.databinding.FragmentEditAppointmentBinding
+import com.example.project1.room.AppointmentApp
+import com.example.project1.room.AppointmentDB
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -41,6 +43,8 @@ class FragmentEditAppointment : Fragment() {
     lateinit var field_owner : EditText
     lateinit var field_tel : EditText
     lateinit var btnEdit : Button
+
+    val app = requireContext().applicationContext as AppointmentApp
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -138,7 +142,30 @@ class FragmentEditAppointment : Fragment() {
         field_tel.addTextChangedListener(createTextWatcher(field_tel))
 
         btnEdit.setOnClickListener {
-            Toast.makeText(requireContext(), "No se ha implementado esta parte", Toast.LENGTH_SHORT).show()
+            updateAppointment()
+            //Toast.makeText(requireContext(), "No se ha implementado esta parte", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun updateAppointment() {
+        // Get updated appointment data from EditTexts
+        val updatedName = field_name.text.toString()
+        val updatedBreed = field_breed.text.toString()
+        val updatedOwner = field_owner.text.toString()
+        val updatedTelephone = field_tel.text.toString()
+
+        // Update appointment object with new data
+//        currentAppointment.apply {
+//            name_pet = updatedName
+//            breed = updatedBreed
+//            name_owner = updatedOwner
+//            phone_number = updatedTelephone
+//        }
+
+        // Update appointment in the database
+//        app.room.appointmentDao().updateAppointment()
+
+        // Navigate back to previous Fragment
+        findNavController().navigateUp()
     }
 }
