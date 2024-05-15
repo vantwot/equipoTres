@@ -8,4 +8,5 @@
     <string name="dogapp">DogApp</string>
     <string name="Administra">Administrador de citas</string>
     <string name="appointment_title">Editar Cita</string>
+    <string name="create_title">Nueva Cita</string>
 </resources>

@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 
 @Database(
     entities = [Appointment::class],
-    version = 1
+    version = 2
 )
 abstract class AppointmentDB : RoomDatabase() {
     abstract fun appointmentDao(): AppointmentDao

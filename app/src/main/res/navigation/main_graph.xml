@@ -21,7 +21,7 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_createFragment"
-            app:destination="@id/editAppointmentFragment" />
+            app:destination="@id/createFragment" />
     </fragment>
 
     <fragment

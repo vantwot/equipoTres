@@ -6,11 +6,11 @@ import androidx.room.PrimaryKey
 @Entity
 data class Appointment (
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Int? = null,
     val name_pet: String,
     val breed: String,
     val name_owner: String,
     val phone_number: String,
-    val symptoms: String
+    val symptoms: String,
 )
 
