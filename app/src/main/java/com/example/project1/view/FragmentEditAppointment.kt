@@ -37,6 +37,7 @@ import retrofit2.Response
  * Use the [FragmentEditAppointment.newInstance] factory method to
  * create an instance of this fragment.
  */
+
 class FragmentEditAppointment : Fragment() {
     private var _binding: FragmentEditAppointmentBinding? = null
     private  val binding get() = _binding!!
@@ -120,8 +121,8 @@ class FragmentEditAppointment : Fragment() {
             btnEdit.setTypeface(null, Typeface.BOLD)
             btnEdit.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.strong_pink))
         } else {
-            btnEdit.setTextColor(Color.GRAY)
-            btnEdit.setBackgroundColor(Color.LTGRAY)
+            btnEdit.setTextColor(ContextCompat.getColor(requireContext(), R.color.lightgrey))
+            btnEdit.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.strong_pink))
         }
     }
     private fun verifyFields (){
@@ -170,6 +171,7 @@ class FragmentEditAppointment : Fragment() {
         return appointmentLiveData
     }
 
+
     private fun updateAppointment() {
 
         // Get updated appointment data from EditTexts
@@ -195,7 +197,6 @@ class FragmentEditAppointment : Fragment() {
         }
 
           // Navigate to previous Detail Fragment
-          findNavController().navigateUp()
-
+        findNavController().navigate(R.id.action_editAppointmentFragment_to_homeFragment)
     }
 }

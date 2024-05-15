@@ -6,5 +6,6 @@
     <color name="bottom">#F05861</color>
     <color name="strong_pink" >#F05861</color>
     <color name="purple" >#5312CC</color>
-    <color name="grey" >#2B292E</color>
+    <color name="grey" >#AB000000</color>
+    <color name="lightgrey" >#894646</color>
 </resources>
