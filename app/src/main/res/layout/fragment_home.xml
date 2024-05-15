@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.26" />
+            app:layout_constraintGuide_percent="0.27" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline2"
@@ -50,13 +50,6 @@
             app:layout_constraintGuide_percent="0.09" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.79" />
-
-        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -69,6 +62,13 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.91" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.92" />
 
 
         <TextView
@@ -94,56 +94,57 @@
         app:layout_constraintBottom_toBottomOf="@id/guideline8"
         />
 
-    <FrameLayout
-        android:layout_width="419dp"
-        android:layout_height="195dp"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="-4dp"
-        tools:layout_editor_absoluteY="-2dp"
-        android:background="@drawable/tooltbar_view"
-        app:layout_constraintBottom_toBottomOf="@id/guideline1"
-        >
-
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="95dp"
-            android:layout_height="117dp"
-            android:layout_marginLeft="300dp"
-            android:layout_marginTop="10dp"
-            android:src="@drawable/login_dog"
-            app:layout_constraintBottom_toBottomOf="@id/guideline2"
-            app:layout_constraintStart_toStartOf="@id/guideline2"
-            />
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="330dp"
-            android:layout_marginTop="135dp"
-            android:fontFamily="@font/lilitaone_regular"
-            android:text="@string/dogapp"
-            android:textColor="@color/white"
-            android:textSize="20dp"
-            tools:text="@string/dogapp"
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="195dp"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/tooltbar_view"
             app:layout_constraintBottom_toBottomOf="@id/guideline1"
-            app:layout_constraintStart_toStartOf="@id/guideline6"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
 
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="254dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:layout_marginTop="50dp"
-            android:fontFamily="@font/lilitaone_regular"
-            android:text="@string/Administra"
-            android:textColor="@color/white"
-            android:textSize="35dp"
-            app:layout_constraintBottom_toBottomOf="@id/guideline1"
-            app:layout_constraintStart_toStartOf="@id/guideline5"
-            />
-    </FrameLayout>
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="MissingConstraints">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="95dp"
+                android:layout_height="117dp"
+                android:layout_marginLeft="300dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/login_dog"
+                app:layout_constraintBottom_toBottomOf="@id/guideline2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideline2" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="310dp"
+                android:layout_marginTop="135dp"
+                android:fontFamily="@font/lilitaone_regular"
+                android:text="@string/dogapp"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toBottomOf="@id/guideline1"
+                app:layout_constraintEnd_toEndOf="@id/guideline9"
+                app:layout_constraintStart_toStartOf="@id/guideline6"
+                tools:text="@string/dogapp" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="254dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="50dp"
+                android:fontFamily="@font/lilitaone_regular"
+                android:text="@string/Administra"
+                android:textColor="@color/white"
+                android:textSize="35dp"
+                app:layout_constraintBottom_toBottomOf="@id/guideline1"
+                app:layout_constraintStart_toStartOf="@id/guideline5" />
+        </FrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
     </layout>
