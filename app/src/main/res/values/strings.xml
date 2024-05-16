@@ -10,4 +10,9 @@
     <string name="appointment_title">Editar Cita</string>
     <string name="create_title">Nueva Cita</string>
     <string name="petname">petname</string>
+    <string name="tiene_garrapatas">Tiene garrapatas</string>
+    <string name="raza_date_detail">Pitbull</string>
+    <string name="back">Back</string>
+    <string name="delete_button">delete_button</string>
+    <string name="edit_button">Edit_button</string>
 </resources>
