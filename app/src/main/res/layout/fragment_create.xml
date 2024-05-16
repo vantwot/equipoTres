@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         android:layout_margin="0dp"
-        tools:context=".view.CreateFragment">
+        tools:context=".view.fragment.CreateFragment">
 
         <!-- Define las guidelines para actuar como espacios -->
         <androidx.constraintlayout.widget.Guideline

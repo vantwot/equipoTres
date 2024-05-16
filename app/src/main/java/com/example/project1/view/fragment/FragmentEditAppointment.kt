@@ -1,4 +1,4 @@
-package com.example.project1.view
+package com.example.project1.view.fragment
 
 import android.graphics.Color
 import android.graphics.Typeface
@@ -21,14 +21,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.project1.R
-import com.example.project1.databinding.FragmentCreateBinding
 import com.example.project1.retrofit.Breed
 import com.example.project1.retrofit.RetrofitClient
 import com.example.project1.databinding.FragmentEditAppointmentBinding
-import com.example.project1.room.Appointment
-import com.example.project1.room.AppointmentApp
-import com.example.project1.room.AppointmentDB
-import com.example.project1.room.AppointmentDao
+import com.example.project1.model.Appointment
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -36,17 +32,13 @@ import retrofit2.Response
 
 /**
  * A simple [Fragment] subclass.
- * Use the [CreateFragment.newInstance] factory method to
+ * Use the [FragmentEditAppointment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class CreateFragment : Fragment() {
-    private var _binding: FragmentCreateBinding? = null
-    private  val binding get() = _binding!!
 
-    private val instance: AppointmentDao
-        get() {
-            TODO()
-        }
+class FragmentEditAppointment : Fragment() {
+    private var _binding: FragmentEditAppointmentBinding? = null
+    private  val binding get() = _binding!!
 
     val ERROR_MESSAGE = "Ocurrió un error!"
 
@@ -54,8 +46,7 @@ class CreateFragment : Fragment() {
     lateinit var field_breed : EditText
     lateinit var field_owner : EditText
     lateinit var field_tel : EditText
-    // lateinit var field_syn : EditText
-    lateinit var btnCreate : Button
+    lateinit var btnEdit : Button
 
     lateinit var app: AppointmentApp
 
@@ -63,14 +54,14 @@ class CreateFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentCreateBinding.inflate(inflater, container, false)
+        _binding = FragmentEditAppointmentBinding.inflate(inflater, container, false)
 
         // Asignación de variables
         field_name = binding.editTextName
         field_breed = binding.editTextBreed
         field_owner = binding.editTextOwner
         field_tel = binding.editTextTelephone
-        btnCreate = binding.createButton
+        btnEdit = binding.editButton
 
         // Obtener la instancia de la aplicación de la base de datos de citas (AppointmentApp)
         val applicationContext = requireContext().applicationContext
@@ -118,18 +109,18 @@ class CreateFragment : Fragment() {
         val toolbar : Toolbar = binding.contentToolbar.findViewById(R.id.toolbar_edit)
         toolbar.setNavigationOnClickListener {
             // Navegar a otro fragmento cuando se hace clic en el icono de navegación
-            findNavController().navigate(R.id.action_createFragment_to_homeFragment)
+            findNavController().navigate(R.id.action_editAppointmentFragment_to_homeFragment)
         }
     }
 
     private fun updateButtonState() {
-        if (btnCreate.isEnabled) {
-            btnCreate.setTextColor(Color.WHITE)
-            btnCreate.setTypeface(null, Typeface.BOLD)
-            btnCreate.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.strong_pink))
+        if (btnEdit.isEnabled) {
+            btnEdit.setTextColor(Color.WHITE)
+            btnEdit.setTypeface(null, Typeface.BOLD)
+            btnEdit.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.strong_pink))
         } else {
-            btnCreate.setTextColor(ContextCompat.getColor(requireContext(), R.color.lightgrey))
-            btnCreate.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.strong_pink))
+            btnEdit.setTextColor(ContextCompat.getColor(requireContext(), R.color.lightgrey))
+            btnEdit.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.strong_pink))
         }
     }
     private fun verifyFields (){
@@ -138,7 +129,7 @@ class CreateFragment : Fragment() {
         val isFieldOwnerEmpty = field_owner.text.isNullOrEmpty()
         val isFieldTelEmpty = field_tel.text.isNullOrEmpty()
 
-        btnCreate.isEnabled = !(isFieldNameEmpty || isFielBreedEmpty ||
+        btnEdit.isEnabled = !(isFieldNameEmpty || isFielBreedEmpty ||
                 isFieldOwnerEmpty || isFieldTelEmpty)
 
         updateButtonState()
@@ -164,8 +155,8 @@ class CreateFragment : Fragment() {
         field_owner.addTextChangedListener(createTextWatcher(field_owner))
         field_tel.addTextChangedListener(createTextWatcher(field_tel))
 
-        btnCreate.setOnClickListener {
-            createAppointment()
+        btnEdit.setOnClickListener {
+            updateAppointment()
         }
     }
 
@@ -178,28 +169,32 @@ class CreateFragment : Fragment() {
         return appointmentLiveData
     }
 
-    private fun createAppointment() {
 
-        // Get updated appointment data from EditTexts
-        val createdName = field_name.text.toString()
-        val createBreed = field_breed.text.toString()
-        val createdOwner = field_owner.text.toString()
-        val createdTelephone = field_tel.text.toString()
+    private fun updateAppointment() {
 
-        lifecycleScope.launch {
-            val createAppointment = Appointment(
-                name_pet = createdName,
-                breed = createBreed,
-                name_owner = createdOwner,
-                phone_number = createdTelephone,
-                symptoms = "Tos"
-            )
-            // Create the appointment in the database
-            instance.insertAppointment(createAppointment)
-        }
-
-        // Navigate to previous Detail Fragment
-        findNavController().navigate(R.id.action_createFragment_to_homeFragment)
-
+//        // Get updated appointment data from EditTexts
+//        val updatedName = field_name.text.toString()
+//        val updatedBreed = field_breed.text.toString()
+//        val updatedOwner = field_owner.text.toString()
+//        val updatedTelephone = field_tel.text.toString()
+//
+//        val appointmentId = id
+//
+//        lifecycleScope.launch {
+//            // Get the appointment that needs to be updated
+//            val appointment = app.room.appointmentDao().getAppointmentById(appointmentId)
+//            // Create a new Appointment object with updated data
+//            val updatedAppointment = appointment.copy(
+//                name_pet = updatedName,
+//                breed = updatedBreed,
+//                name_owner = updatedOwner,
+//                phone_number = updatedTelephone
+//            )
+//            // Update the appointment in the database
+//            app.room.appointmentDao().updateAppointment(updatedAppointment)
+//        }
+//
+//          // Navigate to previous Detail Fragment
+//        findNavController().navigate(R.id.action_editAppointmentFragment_to_homeFragment)
     }
 }
