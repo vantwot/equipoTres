@@ -1,5 +1,6 @@
 package com.example.project1.view.fragment
 
+import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
@@ -15,6 +16,7 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
@@ -54,7 +56,9 @@ class CreateFragment : Fragment() {
     lateinit var field_breed : EditText
     lateinit var field_owner : EditText
     lateinit var field_tel : EditText
+    lateinit var field_sel : Spinner
     lateinit var btnCreate : Button
+    private  var opcion = "Síntomas"
     private val app: AppointmentViewModel by viewModels()
 
     private fun setupSpinner() {
@@ -65,7 +69,7 @@ class CreateFragment : Fragment() {
         binding.syntomsSelection.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val selectedBreed = optionsSpinner[position]
-                println("Selección: $selectedBreed")
+                opcion = selectedBreed
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -85,6 +89,7 @@ class CreateFragment : Fragment() {
         field_breed = binding.editTextBreed
         field_owner = binding.editTextOwner
         field_tel = binding.editTextTelephone
+        field_sel = binding.syntomsSelection
         btnCreate = binding.createButton
 
         // Funciones necesarias
@@ -147,7 +152,7 @@ class CreateFragment : Fragment() {
         val isFieldTelEmpty = field_tel.text.isNullOrEmpty()
 
         btnCreate.isEnabled = !(isFieldNameEmpty || isFielBreedEmpty ||
-                isFieldOwnerEmpty || isFieldTelEmpty)
+                    isFieldOwnerEmpty || isFieldTelEmpty)
 
         updateButtonState()
 
@@ -171,46 +176,48 @@ class CreateFragment : Fragment() {
         field_breed.addTextChangedListener(createTextWatcher(field_breed))
         field_owner.addTextChangedListener(createTextWatcher(field_owner))
         field_tel.addTextChangedListener(createTextWatcher(field_tel))
-
         btnCreate.setOnClickListener {
             createAppointment()
         }
     }
 
+    private fun showSymptomSelectionDialog(context: Context) {
+        val builder = AlertDialog.Builder(context)
+        builder.setMessage("Selecciona un síntoma")
+        builder.setPositiveButton("Aceptar") { dialog, _ ->
+            dialog.dismiss()
+        }
+        val dialog = builder.create()
+        dialog.show()
+    }
+
 
     private fun createAppointment() {
-
         // Get updated appointment data from EditTexts
         val createdName = field_name.text.toString()
         val createBreed = field_breed.text.toString()
         val createdOwner = field_owner.text.toString()
         val createdTelephone = field_tel.text.toString()
-        val createdSyntoms = field_tel.text.toString()
-
 
         try{lifecycleScope.launch {
-            val createAppointment = Appointment(
-                name_pet = createdName,
-                breed = createBreed,
-                name_owner = createdOwner,
-                phone_number = createdTelephone,
-                symptoms = "Tos"
-            )
-            // Create the appointment in the database
-            app.insertAppointment(createAppointment)
+            if (opcion != "Síntomas") {
+                val createAppointment = Appointment(
+                    name_pet = createdName,
+                    breed = createBreed,
+                    name_owner = createdOwner,
+                    phone_number = createdTelephone,
+                    symptoms = opcion
+                )
+                // Create the appointment in the database
+                app.insertAppointment(createAppointment)
+                // Navigate to previous Detail Fragment
+                findNavController().navigate(R.id.action_createFragment_to_homeFragment)
+            } else {
+                showSymptomSelectionDialog(requireContext())
+            }
         }}
         catch(e: Exception){
             Log.d("error: ", e.toString())
         }
-
-        /*
-        * private val appointmentViewModel: AppointmentViewModel by viewModels()
-            val appointment = Appointment(dogName = dogName, breed = breed, ownerName = nameOwner, phone = phone, symptom = symptom)
-        appointmentViewModel.saveAppointment(appointment)
-        */
-
-        // Navigate to previous Detail Fragment
-        findNavController().navigate(R.id.action_createFragment_to_homeFragment)
-
     }
 }
