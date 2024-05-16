@@ -1,80 +1,222 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <data>
-
-    </data>
+    xmlns:tools="http://schemas.android.com/tools" >
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/FragmentEdit"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="0dp"
         android:background="@color/white"
-        tools:context=".view.FragmentEditAppointment">
+        tools:context=".view.fragment.AppointmentManagerFragment">
 
-        <!-- Define las guidelines para actuar como espacios -->
+        <!-- Header con fondo gris oscuro y ambas esquinas inferiores curvadas -->
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <RelativeLayout
+            android:id="@+id/detailsHeaderLayout"
+            android:layout_width="match_parent"
+            android:layout_height="95dp"
+            android:layout_marginHorizontal="10dp"
+            android:background="@drawable/curv_toolbar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!-- Botón de regreso -->
+            <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="50dp"
+                android:background="@drawable/baseline_arrow_back_ios_24"
+                android:contentDescription="@string/back"/>
+
+            <!-- Nombre de la mascota -->
+            <TextView
+                android:id="@+id/titleTextDetailsName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="90dp"
+                android:gravity="center"
+                android:text="Cory"
+                android:textColor="@color/white"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+        <!-- Tarjeta con la información de la cita -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/petInfoLayout"
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/date_detail_card"
+            android:elevation="1dp"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.1" />
+            android:padding="15dp"
+            app:layout_constraintBottom_toTopOf="@+id/detailsFooterLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.526"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detailsHeaderLayout"
+            app:layout_constraintVertical_bias="0.675"
+            tools:ignore="UseCompoundDrawables">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.94" />
+            <!-- Turno de la cita -->
+            <TextView
+                android:id="@+id/numberAppointmnet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textColor="#F05861"
+                tools:ignore="MissingConstraints"
+                android:textStyle="bold"
+                android:text="#1"/>
 
-        <!-- Include toolbar-->
+            <!-- Raza de la mascota -->
+            <TextView
+                android:id="@+id/petBreedName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/raza_date_detail"
+                android:textColor="@color/black"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteY="109dp" />
 
-        <include
-            android:id="@+id/contentToolbar"
-            layout="@layout/date_detail_toolbar"
-            app:layout_constraintEnd_toStartOf="@id/guideline2"
-            app:layout_constraintHorizontal_bias="0.438"
-            app:layout_constraintStart_toEndOf="@id/guideline1"
-            tools:layout_editor_absoluteY="0dp" />
+            <!-- Sintoma de la mascota -->
+            <TextView
+                android:id="@+id/petSymptoms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/tiene_garrapatas"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@+id/view2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/petBreedName"
+                app:layout_constraintVertical_bias="0.666" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            <!--Linea separadora roja -->
+            <View
+                android:id="@+id/view2"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#F05861"
+                android:elevation="10dp"
+                tools:layout_editor_absoluteX="15dp"
+                tools:layout_editor_absoluteY="173dp"
+                tools:ignore="MissingConstraints" />
+
+            <!--Nombre del propietario -->
+            <TextView
+                android:id="@+id/ownerName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="Propietario: Walter"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@+id/ownerPhone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.004"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view2"
+                app:layout_constraintVertical_bias="0.25" />
+
+            <!-- Telefono del propietario -->
+            <TextView
+                android:id="@+id/ownerPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginBottom="8dp"
+                android:text="Télefono: 3222137659"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Imagen de la raza de la mascota -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center_horizontal"
+            android:elevation="8dp"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintBottom_toBottomOf="@+id/petInfoLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detailsHeaderLayout"
+            app:layout_constraintVertical_bias="0.282"
+            tools:ignore="MissingConstraints">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/petBreedImage"
+                android:layout_width="185dp"
+                android:layout_height="190dp"
+                android:layout_gravity="center"
+                android:contentDescription="@string/pet_image" />
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- Footer con los botones de eliminar y editar la cita -->
+        <RelativeLayout
+            android:id="@+id/detailsFooterLayout"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
             android:orientation="horizontal"
-            app:layout_constraintGuide_begin="387dp" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="MissingConstraints">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="404dp" />
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/deleteButton"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="10dp"
+                android:backgroundTint="#F05861"
+                android:contentDescription="@string/delete_button"
+                android:src="@drawable/trash_icon"
+                app:useCompatPadding="true"
+                app:fabCustomSize="45dp"
+                android:elevation="6dp"
+                app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium"
+                app:tint="@color/white" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="4dp" />
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/editButton"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="10dp"
+                android:backgroundTint="@color/black"
+                android:contentDescription="@string/edit_button"
+                android:elevation="6dp"
+                android:src="@drawable/baseline_create_24"
+                app:fabCustomSize="45dp"
+                app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium"
+                app:tint="@color/white"
+                app:useCompatPadding="true" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline13"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_begin="123dp" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline14"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="20dp" />
+        </RelativeLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

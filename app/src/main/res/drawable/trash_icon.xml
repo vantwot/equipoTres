@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/drawable/trash_can.xml -->
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="90dp"/>
+            <solid android:color="#F05861"/>
+        </shape>
+    </item>
+
+    <item android:top="170dp" android:bottom="100dp" android:left="160dp" android:right="160dp">
+        <shape android:shape="rectangle">
+            <corners android:bottomLeftRadius="20dp"
+                android:bottomRightRadius="20dp"/>
+
+            <solid android:color="@android:color/white"/>
+        </shape>
+    </item>
+
+
+    <item android:top="150dp" android:bottom="335dp" android:left="155dp" android:right="155dp">
+        <shape>
+            <solid android:color="@color/white"/>
+        </shape>
+    </item>
+
+
+    <item android:top="135dp" android:bottom="350dp" android:left="200dp" android:right="200dp">
+        <shape>
+            <solid android:color="@color/white"/>
+        </shape>
+    </item>
+</layer-list>
