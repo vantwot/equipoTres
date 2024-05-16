@@ -14,8 +14,7 @@ data class Appointment (
     val name_owner: String,
     val phone_number: String,
     val symptoms: String,
-)
-//    : Serializable
+) : Serializable
 
 
 

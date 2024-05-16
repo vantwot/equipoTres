@@ -21,9 +21,11 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_createFragment"
-            app:destination="@id/editAppointmentFragment" />
+            app:destination="@id/createFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
     </fragment>
-
     <fragment
         android:id="@+id/createFragment"
         android:name="com.example.project1.view.fragment.CreateFragment"
@@ -42,4 +44,14 @@
             android:id="@+id/action_editAppointmentFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.example.project1.view.fragment.FragmentEditAppointment"
+        android:label="fragment_detail"
+        tools:layout="@layout/fragment_date_detail" >
+        <action
+            android:id="@+id/action_detailFragment_to_editAppointmentFragment"
+            app:destination="@id/editAppointmentFragment" />
+    </fragment>
+
 </navigation>
