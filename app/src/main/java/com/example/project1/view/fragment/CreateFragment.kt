@@ -25,14 +25,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.project1.R
+import com.example.project1.data.AppointmentDB
 import com.example.project1.databinding.FragmentCreateBinding
 import com.example.project1.retrofit.Breed
 import com.example.project1.retrofit.RetrofitClient
-import com.example.project1.databinding.FragmentEditAppointmentBinding
-import com.example.project1.room.Appointment
+import com.example.project1.model.Appointment
 import com.example.project1.room.AppointmentApp
-import com.example.project1.room.AppointmentDB
-import com.example.project1.room.AppointmentDao
 import com.example.project1.viewmodel.AppointmentViewModel
 import kotlinx.coroutines.launch
 import retrofit2.Call
@@ -89,18 +87,7 @@ class CreateFragment : Fragment() {
         field_tel = binding.editTextTelephone
         btnCreate = binding.createButton
 
-        // Obtener la instancia de la aplicación de la base de datos de citas (AppointmentApp)
-        val applicationContext = requireContext().applicationContext
-        if (applicationContext is AppointmentApp) {
-            //app = applicationContext
-        } else {
-            Toast.makeText(requireContext(), "Error: No se pudo obtener la aplicación", Toast.LENGTH_SHORT).show()
-        }
-
-
-
         // Funciones necesarias
-        controladores()
         getBreeds()
         setupSpinner()
         setToolbar()
@@ -109,9 +96,6 @@ class CreateFragment : Fragment() {
         return  binding.root
     }
 
-    private fun controladores(){
-
-    }
     private fun getBreeds (){
         val retrofitBring = RetrofitClient.consumeApi.getBring()
         retrofitBring.enqueue(object : Callback<Breed>{

@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import com.example.project1.model.Appointment
 import androidx.room.Room
 import android.content.Context
-import com.appmovil.dogapp.utils.Constants.NAME_DB
+import com.example.project1.utils.Constants.NAME_BD
 
 @Database(
     entities = [Appointment::class],
@@ -18,7 +18,7 @@ abstract class AppointmentDB : RoomDatabase() {
             return Room.databaseBuilder(
                 context.applicationContext,
                 AppointmentDB::class.java,
-                NAME_DB
+                NAME_BD
             ).build()
         }
     }
