@@ -169,7 +169,7 @@
                 android:layout_width="185dp"
                 android:layout_height="190dp"
                 android:layout_gravity="center"
-                android:contentDescription="@string/pet_image" />
+                />
 
         </androidx.cardview.widget.CardView>
 

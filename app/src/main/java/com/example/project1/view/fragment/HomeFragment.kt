@@ -5,11 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.project1.R
-import com.example.project1.databinding.FragmentEditAppointmentBinding
 import com.example.project1.databinding.FragmentHomeBinding
 import com.example.project1.view.adapter.AppointmentAdapter
 import com.example.project1.viewmodel.AppointmentViewModel
@@ -43,7 +43,7 @@ class HomeFragment : Fragment() {
 
     private fun observadorViewModel(){
         observerListAppointment()
-        //observerProgress()
+        observerProgress()
     }
 
     private fun observerListAppointment(){
@@ -59,11 +59,11 @@ class HomeFragment : Fragment() {
 
         }
     }
-   // private fun observerProgress(){
-       // appointmentViewModel.progresState.observe(viewLifecycleOwner){status ->
-            //binding.progress.isVisible = status
-    //}
-   // }
+    private fun observerProgress(){
+        appointmentViewModel.progresState.observe(viewLifecycleOwner){status ->
+            binding.progress.isVisible = status
+    }
+    }
 
 }
 
