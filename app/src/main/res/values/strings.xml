@@ -9,4 +9,5 @@
     <string name="Administra">Administrador de citas</string>
     <string name="appointment_title">Editar Cita</string>
     <string name="create_title">Nueva Cita</string>
+    <string name="petname">petname</string>
 </resources>
