@@ -1,9 +1,12 @@
 package com.example.project1.viewmodel
 
+import android.app.Application
 import androidx.lifecycle.ViewModel
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.project1.model.Appointment
+import com.example.project1.repository.repository
+import com.example.project1.room.Appointment
 import kotlinx.coroutines.launch
 //import com.example.project1.model.BreedResponse
 import retrofit2.Call
@@ -12,7 +15,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class AppointmentViewModel : ViewModel() {
+class AppointmentViewModel (application: Application) : AndroidViewModel(application) {
     val context = getApplication<Application>()
     private val appointmentRepository = repository(context)
 
@@ -22,18 +25,6 @@ class AppointmentViewModel : ViewModel() {
                 appointmentRepository.insertAppointment(appointment)
             } catch (e: Exception) {
                 Log.d("error: ", e.toString())
-            }
-        }
-    }
-
-    fun updateInventory(inventory: Appointment) {
-        viewModelScope.launch {
-            _progresState.value = true
-            try {
-                appointmentRepository.updateRepositoy(inventory)
-                _progresState.value = false
-            } catch (e: Exception) {
-                _progresState.value = false
             }
         }
     }

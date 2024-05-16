@@ -1,5 +1,6 @@
 package com.example.project1.view.fragment
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
@@ -17,6 +19,7 @@ import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
@@ -25,7 +28,12 @@ import com.example.project1.R
 import com.example.project1.databinding.FragmentCreateBinding
 import com.example.project1.retrofit.Breed
 import com.example.project1.retrofit.RetrofitClient
-import com.example.project1.model.Appointment
+import com.example.project1.databinding.FragmentEditAppointmentBinding
+import com.example.project1.room.Appointment
+import com.example.project1.room.AppointmentApp
+import com.example.project1.room.AppointmentDB
+import com.example.project1.room.AppointmentDao
+import com.example.project1.viewmodel.AppointmentViewModel
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -40,16 +48,33 @@ class CreateFragment : Fragment() {
     private var _binding: FragmentCreateBinding? = null
     private  val binding get() = _binding!!
 
+    private val optionsSpinner = listOf("Síntomas", "Solo duerme", "No come", "Fractura extremidad", "Tiene pulgas", "Tiene garrapatas", "Bota demasiado pelo")
+
     val ERROR_MESSAGE = "Ocurrió un error!"
 
     lateinit var field_name : EditText
     lateinit var field_breed : EditText
     lateinit var field_owner : EditText
     lateinit var field_tel : EditText
-    // lateinit var field_syn : EditText
     lateinit var btnCreate : Button
+    private val app: AppointmentViewModel by viewModels()
 
-    lateinit var app: AppointmentApp
+    private fun setupSpinner() {
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, optionsSpinner)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.syntomsSelection.adapter = adapter
+
+        binding.syntomsSelection.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val selectedBreed = optionsSpinner[position]
+                println("Selección: $selectedBreed")
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // Manejar el caso en que no se seleccione nada, si es necesario
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,7 +92,7 @@ class CreateFragment : Fragment() {
         // Obtener la instancia de la aplicación de la base de datos de citas (AppointmentApp)
         val applicationContext = requireContext().applicationContext
         if (applicationContext is AppointmentApp) {
-            app = applicationContext
+            //app = applicationContext
         } else {
             Toast.makeText(requireContext(), "Error: No se pudo obtener la aplicación", Toast.LENGTH_SHORT).show()
         }
@@ -77,6 +102,7 @@ class CreateFragment : Fragment() {
         // Funciones necesarias
         controladores()
         getBreeds()
+        setupSpinner()
         setToolbar()
         eventInputs()
 
@@ -167,58 +193,40 @@ class CreateFragment : Fragment() {
         }
     }
 
-    private fun getAppointmentById(id: Int): LiveData<Appointment> {
-        val appointmentLiveData = MutableLiveData<Appointment>()
-        lifecycleScope.launch {
-            val appointment = app.room.appointmentDao().getAppointmentById(id)
-            appointmentLiveData.postValue(appointment)
-        }
-        return appointmentLiveData
-    }
 
     private fun createAppointment() {
-        lifecycleScope.launch {
-            try {
-                app.room.appointmentDao().insertAppointment(
-                    Appointment(
-                        0, "Nala", "labrador", "Deiby Rodríguez", "3122364554", "Tos"
-                    )
-                )
-                app.room.appointmentDao().insertAppointment(
-                    Appointment(
-                        0, "Pepa", "Tasa de te", "Tomas de la Cruz", "3112304554", "Tos"
-                    )
-                )
-                app.room.appointmentDao().insertAppointment(
-                    Appointment(
-                        0, "Domi", "pitbull", "Marta Rodríguez", "3102364500", "Gripa"
-                    )
-                )
-            } catch (e: Exception) {
-                Toast.makeText(requireContext(), "Error al crear la cita", Toast.LENGTH_SHORT).show()
-                Log.e("CreateFragment", "Error al crear la cita", e)
-            }
+
+        // Get updated appointment data from EditTexts
+        val createdName = field_name.text.toString()
+        val createBreed = field_breed.text.toString()
+        val createdOwner = field_owner.text.toString()
+        val createdTelephone = field_tel.text.toString()
+        val createdSyntoms = field_tel.text.toString()
+
+
+        try{lifecycleScope.launch {
+            val createAppointment = Appointment(
+                name_pet = createdName,
+                breed = createBreed,
+                name_owner = createdOwner,
+                phone_number = createdTelephone,
+                symptoms = "Tos"
+            )
+            // Create the appointment in the database
+            app.insertAppointment(createAppointment)
+        }}
+        catch(e: Exception){
+            Log.d("error: ", e.toString())
         }
-//        // Get updated appointment data from EditTexts
-//        val createdName = field_name.text.toString()
-//        val createBreed = field_breed.text.toString()
-//        val createdOwner = field_owner.text.toString()
-//        val createdTelephone = field_tel.text.toString()
-//
-//        lifecycleScope.launch {
-//            val createAppointment = Appointment(
-//                name_pet = createdName,
-//                breed = createBreed,
-//                name_owner = createdOwner,
-//                phone_number = createdTelephone,
-//                symptoms = "Tos"
-//            )
-//            // Create the appointment in the database
-//            instance.insertAppointment(createAppointment)
-//        }
-//
-//        // Navigate to previous Detail Fragment
-//        findNavController().navigate(R.id.action_createFragment_to_homeFragment)
+
+        /*
+        * private val appointmentViewModel: AppointmentViewModel by viewModels()
+            val appointment = Appointment(dogName = dogName, breed = breed, ownerName = nameOwner, phone = phone, symptom = symptom)
+        appointmentViewModel.saveAppointment(appointment)
+        */
+
+        // Navigate to previous Detail Fragment
+        findNavController().navigate(R.id.action_createFragment_to_homeFragment)
 
     }
 }
