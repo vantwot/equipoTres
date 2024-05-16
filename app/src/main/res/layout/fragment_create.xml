@@ -63,7 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.75" />
+            app:layout_constraintGuide_percent="0.80" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline8"
@@ -92,6 +92,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.96" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.63" />
 
         <include
             android:id="@+id/contentToolbar"
@@ -173,6 +180,26 @@
                 android:singleLine="true"
                 android:inputType="number"
                 android:maxLength="10"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/spinnerSyntoms"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Síntomas"
+            app:hintTextColor="@color/grey"
+            app:layout_constraintTop_toTopOf="@id/guideline12"
+            app:layout_constraintStart_toStartOf="@id/guideline5"
+            app:layout_constraintEnd_toStartOf="@id/guideline6">
+
+            <Spinner
+                android:id="@+id/syntomsSelection"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:singleLine="true"
+                android:maxLength="30"
+                android:inputType="text"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
