@@ -128,7 +128,7 @@ class CreateFragment : Fragment() {
     }
 
     private fun setToolbar (){
-        val toolbar : Toolbar = binding.contentToolbar.findViewById(R.id.toolbar_edit)
+        val toolbar : Toolbar = binding.contentToolbar.toolbarEdit
         toolbar.setNavigationOnClickListener {
             // Navegar a otro fragmento cuando se hace clic en el icono de navegación
             findNavController().navigate(R.id.action_createFragment_to_homeFragment)

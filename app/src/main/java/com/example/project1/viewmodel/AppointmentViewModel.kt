@@ -23,10 +23,12 @@ class AppointmentViewModel (application: Application) : AndroidViewModel(applica
 
     fun insertAppointment(appointment: Appointment) {
         viewModelScope.launch {
+            _progresState.value = true
             try {
                 appointmentRepository.insertAppointment(appointment)
+                _progresState.value = false
             } catch (e: Exception) {
-                Log.d("error: ", e.toString())
+                _progresState.value = false
             }
         }
     }
