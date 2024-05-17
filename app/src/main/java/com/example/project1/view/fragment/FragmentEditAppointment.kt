@@ -13,21 +13,20 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.project1.R
 import com.example.project1.retrofit.Breed
 import com.example.project1.retrofit.RetrofitClient
 import com.example.project1.databinding.FragmentEditAppointmentBinding
+import com.example.project1.model.Appointment
+import com.example.project1.retrofit.ImagenResponse
 import com.example.project1.viewmodel.AppointmentViewModel
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -39,39 +38,64 @@ import retrofit2.Response
  */
 
 class FragmentEditAppointment : Fragment() {
-    private var _binding: FragmentEditAppointmentBinding? = null
-    private  val binding get() = _binding!!
+    private lateinit var binding: FragmentEditAppointmentBinding
+    private val app: AppointmentViewModel by viewModels()
+    private lateinit var receivedAppointment: Appointment
 
     val ERROR_MESSAGE = "Ocurrió un error!"
-
-    var idAppointment: Int = 1
 
     lateinit var field_name : EditText
     lateinit var field_breed : EditText
     lateinit var field_owner : EditText
     lateinit var field_tel : EditText
     lateinit var btnEdit : Button
-    private val app: AppointmentViewModel by viewModels()
 
+    lateinit var photo : String
+    lateinit var progressBar : ProgressBar
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentEditAppointmentBinding.inflate(inflater, container, false)
+        binding = FragmentEditAppointmentBinding.inflate(inflater)
+        binding.lifecycleOwner = this
+
         // Asignación de variables
         field_name = binding.editTextName
         field_breed = binding.editTextBreed
         field_owner = binding.editTextOwner
         field_tel = binding.editTextTelephone
         btnEdit = binding.editButton
-
-        // Funciones necesarias
-        loadAppointment(idAppointment)
-        getBreeds()
-        setToolbar()
-        eventInputs()
+        progressBar = binding.progressBar
 
         return  binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Funciones necesarias
+        controladores()
+        loadAppointment()
+        getBreeds()
+        setToolbar()
+        validateData()
+    }
+
+    private fun controladores() {
+        validateData()
+        btnEdit.setOnClickListener {
+            try {
+                progressBar.visibility = View.VISIBLE
+                getImage(field_breed.text.toString())
+                progressBar.visibility = View.INVISIBLE
+                updateAppointment()
+            } catch(e: Exception) {
+                Log.d("error",e.toString())
+                Toast.makeText(requireContext(), ERROR_MESSAGE, Toast.LENGTH_SHORT).show()
+
+            }
+        }
+
     }
 
     private fun getBreeds (){
@@ -87,17 +111,26 @@ class FragmentEditAppointment : Fragment() {
             }
         })
     }
+
+    private fun getImage (breed : String) {
+        val retrofitBring = RetrofitClient.consumeApi.getRandomDogImage(breed)
+        retrofitBring.enqueue(object : Callback<ImagenResponse>{
+            override fun onResponse(call: Call<ImagenResponse>, response: Response<ImagenResponse>) {
+                val image_breed = response.body()?.message ?: ""
+                photo = image_breed
+            }
+            override fun onFailure(call: Call<ImagenResponse>, t: Throwable) {
+                Toast.makeText(requireContext(), ERROR_MESSAGE, Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
     private fun setupAutoCompleteTextView(breedList: List<String>) {
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, breedList)
         (binding.editTextBreed as? AutoCompleteTextView)?.apply {
             setAdapter(adapter)
             threshold = 2 // Configura el número de caracteres que se deben escribir antes de que se muestren las sugerencias
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     private fun setToolbar (){
@@ -118,86 +151,61 @@ class FragmentEditAppointment : Fragment() {
             btnEdit.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.strong_pink))
         }
     }
-    private fun verifyFields (){
-        val isFieldNameEmpty = field_name.text.isNullOrEmpty()
-        val isFielBreedEmpty = field_breed.text.isNullOrEmpty()
-        val isFieldOwnerEmpty = field_owner.text.isNullOrEmpty()
-        val isFieldTelEmpty = field_tel.text.isNullOrEmpty()
 
-        btnEdit.isEnabled = !(isFieldNameEmpty || isFielBreedEmpty ||
-                isFieldOwnerEmpty || isFieldTelEmpty)
+    private fun validateData() {
+        val listEditText = listOf(field_name, field_breed, field_owner, field_tel)
 
-        updateButtonState()
-
-    }
-    private fun createTextWatcher(editText: EditText): TextWatcher {
-        return object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                verifyFields()
-            }
-
+        val textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // No necesitamos hacer nada aquí
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // No necesitamos hacer nada aquí
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                val isListFull = listEditText.all { it.text.isNotEmpty() }
+                btnEdit.isEnabled = isListFull
+                updateButtonState()
             }
         }
-    }
 
-    private fun eventInputs(){
-        field_name.addTextChangedListener(createTextWatcher(field_name))
-        field_breed.addTextChangedListener(createTextWatcher(field_breed))
-        field_owner.addTextChangedListener(createTextWatcher(field_owner))
-        field_tel.addTextChangedListener(createTextWatcher(field_tel))
-
-        btnEdit.setOnClickListener {
-            updateAppointment(idAppointment)
+        for (editText in listEditText) {
+            editText.addTextChangedListener(textWatcher)
         }
     }
 
-    private fun loadAppointment(id:Int) {
-//        lateinit var appointment : Appointment
-//        try { lifecycleScope.launch {
-//            // Get the appointment that needs to be updated
-//            appointment = app.getAppointmentById(id)
-//
-//            // Actualizar la UI con los detalles de la cita
-//            field_name.setText(appointment.name_pet)
-//            field_breed.setText(appointment.breed)
-//            field_owner.setText(appointment.name_owner)
-//            field_tel.setText(appointment.phone_number)
-//
-//        }} catch (e: Exception) {
-//            Log.d("error: ", e.toString())
-//            // Maneja el error de alguna manera, como mostrar un mensaje al usuario
-//        }
+    private fun loadAppointment() {
+        val receivedBundle = arguments
+        receivedAppointment = receivedBundle?.getSerializable("dataAppointment") as Appointment
+        field_name.setText(receivedAppointment.name_pet)
+        field_breed.setText(receivedAppointment.breed)
+        field_owner.setText(receivedAppointment.name_owner)
+        field_tel.setText(receivedAppointment.phone_number)
     }
 
-    private fun updateAppointment(id:Int) {
-        // Get updated appointment data from EditTexts
-        val updatedName = field_name.text.toString()
-        val updatedBreed = field_breed.text.toString()
-        val updatedOwner = field_owner.text.toString()
-        val updatedTelephone = field_tel.text.toString()
+    private fun updateAppointment() {
+        try {
+            // Get updated appointment data from EditTexts
+            val idApp = receivedAppointment.id
+            val photoAppointment = photo
+            val updatedName = field_name.text.toString()
+            val updatedBreed = field_breed.text.toString()
+            val updatedOwner = field_owner.text.toString()
+            val updatedTelephone = field_tel.text.toString()
+            val symptoms = receivedAppointment.symptoms
 
-        try{lifecycleScope.launch {
-            // Get the appointment that needs to be updated
-            val appointment = app.getAppointmentById(id)
-            // Create a new Appointment object with updated data
-            val updatedAppointment = appointment.copy(
-                name_pet = updatedName,
-                breed = updatedBreed,
-                name_owner = updatedOwner,
-                phone_number = updatedTelephone
-            )
-            // Update the appointment in the database
-            app.updateAppointment(updatedAppointment)
-        }}
-        catch(e: Exception){
+            val appointment = Appointment(id = idApp, photo = photoAppointment,
+                name_pet = updatedName, breed = updatedBreed,
+                name_owner = updatedOwner, phone_number = updatedTelephone,
+                symptoms = symptoms)
+
+            app.updateAppointment(appointment)
+
+            findNavController().navigate(R.id.action_editAppointmentFragment_to_homeFragment)
+        } catch(e: Exception){
             Log.d("error: ", e.toString())
         }
-
-          // Navigate to previous Detail Fragment
-        findNavController().navigate(R.id.action_editAppointmentFragment_to_homeFragment)
     }
 }

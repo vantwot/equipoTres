@@ -10,6 +10,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.example.project1.R
 import com.example.project1.databinding.FragmentDateDetailBinding
 import com.example.project1.model.Appointment
@@ -44,9 +45,14 @@ class FragmentDateDetail : Fragment() {
 
     private fun controladores() {
         navigateBack ()
+        binding.deleteButton.setOnClickListener {
+            deleteAppointment()
+        }
         binding.editButton.setOnClickListener {
             try {
-                findNavController().navigate(R.id.action_detailFragment_to_editAppointmentFragment)
+                val bundle = Bundle()
+                bundle.putSerializable("dataAppointment", receivedAppointment)
+                findNavController().navigate(R.id.action_detailFragment_to_editAppointmentFragment, bundle)
             } catch(e: Exception) {
                 Log.d("error",e.toString())
             }
@@ -64,10 +70,20 @@ class FragmentDateDetail : Fragment() {
     private fun catchIncomingData(){
         val receivedBundle = arguments
         receivedAppointment = receivedBundle?.getSerializable("clave") as Appointment
+        // Cargar la imagen desde la URL
+        Glide.with(this)
+            .load(receivedAppointment.photo)
+            .into(binding.petBreedImage)
         binding.titleTextDetailsName.text = receivedAppointment.name_pet
         binding.petBreedName.text = receivedAppointment.breed
         binding.ownerPhone.text = receivedAppointment.phone_number
         binding.ownerName.text = receivedAppointment.name_owner
         binding.petSymptoms.text = receivedAppointment.symptoms
+    }
+
+    private fun deleteAppointment(){
+        app.deleteAppointment(receivedAppointment)
+        app.getAllAppointment()
+        findNavController().popBackStack()
     }
 }

@@ -42,18 +42,6 @@ class AppointmentViewModel (application: Application) : AndroidViewModel(applica
         }
     }
 
-    fun getAppointmentById(id: Int): Appointment {
-        lateinit var appoint : Appointment
-        viewModelScope.launch {
-            try {
-                appoint = appointmentRepository.getOneAppointment(id)
-            } catch (e: Exception) {
-                Log.d("error: ", e.toString())
-            }
-        }
-        return appoint
-    }
-
     fun updateAppointment(appointment: Appointment) {
         viewModelScope.launch {
             try {

@@ -3,6 +3,8 @@ package com.example.project1.view.viewholder
 import android.os.Bundle
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.example.project1.R
 import com.example.project1.databinding.CardAppointmentBinding
 import com.example.project1.model.Appointment
@@ -18,6 +20,11 @@ class AppointmentViewHolder(binding: CardAppointmentBinding, navController: NavC
         bindingAppointment.petNamev.text = appointment.name_pet
         bindingAppointment.petId.text = appointment.id.toString();
         bindingAppointment.petSimto.text = appointment.symptoms
+        // Cargar la imagen desde la URL y aplicar la transformación CircleCrop
+        Glide.with(bindingAppointment.root.context)
+            .load(appointment.photo)
+            .transform(CircleCrop())
+            .into(bindingAppointment.petImage)
 
         bindingAppointment.itemCardView.setOnClickListener {
             val bundle = Bundle()
