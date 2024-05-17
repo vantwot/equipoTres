@@ -17,15 +17,13 @@ class AppointmentRepository (val context: Context) {
     }
 
     suspend fun getOneAppointment(id:Int) : Appointment{
-        var appointment : Appointment
-        withContext(Dispatchers.IO) {
-            appointment = appointmentDao.getAppointmentById(id)
+        return withContext(Dispatchers.IO) {
+            appointmentDao.getAppointmentById(id)
         }
-        return appointment
     }
 
-    suspend fun getListAppointment():MutableList<Appointment>{
-        return withContext(Dispatchers.IO){
+    suspend fun getAllAppointment(): MutableList<Appointment> {
+        return withContext(Dispatchers.IO) {
             appointmentDao.getAllAppointment()
         }
     }
@@ -36,7 +34,7 @@ class AppointmentRepository (val context: Context) {
         }
     }
 
-    suspend fun updateRepositoy(appointment: Appointment){
+    suspend fun updateAppointment(appointment: Appointment){
         withContext(Dispatchers.IO){
             appointmentDao.updateAppointment(appointment)
         }
