@@ -7,6 +7,9 @@ import com.example.project1.R
 import com.example.project1.databinding.CardAppointmentBinding
 import com.example.project1.model.Appointment
 
+
+// navController: NavController permite navegar en el viewHolder ya que findNavController() no sirve
+// en un viewholder
 class AppointmentViewHolder(binding: CardAppointmentBinding, navController: NavController) :
     RecyclerView.ViewHolder(binding.root) {
     val bindingAppointment = binding
@@ -18,6 +21,8 @@ class AppointmentViewHolder(binding: CardAppointmentBinding, navController: NavC
 
         bindingAppointment.itemCardView.setOnClickListener {
             val bundle = Bundle()
+            //El bundle captura la información de la cita específica
+            // El bundle permite pasar información de un fragmento a otro.
             bundle.putSerializable("clave", appointment)
             navController.navigate(R.id.action_homeFragment_to_detailFragment, bundle)
         }

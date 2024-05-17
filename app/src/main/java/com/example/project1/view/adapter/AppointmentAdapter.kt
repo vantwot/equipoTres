@@ -18,6 +18,7 @@ class AppointmentAdapter(private val listAppointment:MutableList<Appointment>, p
         return listAppointment.size
     }
 
+    // Detecta en donde se dió clic
     override fun onBindViewHolder(holder: AppointmentViewHolder, position: Int) {
         val appointment = listAppointment[position]
         holder.setCardAppointment(appointment)

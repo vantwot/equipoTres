@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.project1.R
 import com.example.project1.databinding.FragmentDateDetailBinding
+import com.example.project1.model.Appointment
 import com.example.project1.viewmodel.AppointmentViewModel
 
 /**
@@ -23,6 +24,7 @@ import com.example.project1.viewmodel.AppointmentViewModel
 class FragmentDateDetail : Fragment() {
     private lateinit var binding: FragmentDateDetailBinding
     private val app: AppointmentViewModel by viewModels()
+    private lateinit var receivedAppointment: Appointment
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,28 +32,16 @@ class FragmentDateDetail : Fragment() {
     ): View? {
         binding = FragmentDateDetailBinding.inflate(inflater)
         binding.lifecycleOwner = this
-        controladores()
         // Inflate the layout for this fragment
         return binding.root
     }
 
-    //    companion object {
-//        /**
-//         * Use this factory method to create a new instance of
-//         * this fragment using the provided parameters.
-//         *
-//         * @param param1 Parameter 1.
-//         * @param param2 Parameter 2.
-//         * @return A new instance of fragment FragmentDateDetail.
-//         */
-//        // TODO: Rename and change types and number of parameters
-//        @JvmStatic
-//        fun newInstance(param1: String, param2: String) =
-//            FragmentDateDetail().apply {
-//                arguments = Bundle().apply {
-//                }
-//            }
-//    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        controladores()
+        catchIncomingData()
+    }
+
     private fun controladores() {
         navigateBack ()
         binding.editButton.setOnClickListener {
@@ -69,5 +59,15 @@ class FragmentDateDetail : Fragment() {
             // Navegar a otro fragmento cuando se hace clic en el icono de navegación
             findNavController().popBackStack()
         }
+    }
+
+    private fun catchIncomingData(){
+        val receivedBundle = arguments
+        receivedAppointment = receivedBundle?.getSerializable("clave") as Appointment
+        binding.titleTextDetailsName.text = receivedAppointment.name_pet
+        binding.petBreedName.text = receivedAppointment.breed
+        binding.ownerPhone.text = receivedAppointment.phone_number
+        binding.ownerName.text = receivedAppointment.name_owner
+        binding.petSymptoms.text = receivedAppointment.symptoms
     }
 }
