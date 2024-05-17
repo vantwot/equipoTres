@@ -34,7 +34,6 @@ import com.example.project1.retrofit.Breed
 import com.example.project1.retrofit.RetrofitClient
 import com.example.project1.model.Appointment
 import com.example.project1.retrofit.ImagenResponse
-import com.example.project1.room.AppointmentApp
 import com.example.project1.viewmodel.AppointmentViewModel
 import kotlinx.coroutines.launch
 import retrofit2.Call
