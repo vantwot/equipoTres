@@ -23,45 +23,39 @@ class AppointmentViewModel (application: Application) : AndroidViewModel(applica
 
     fun insertAppointment(appointment: Appointment) {
         viewModelScope.launch {
-            _progresState.value = true
             try {
                 appointmentRepository.insertAppointment(appointment)
-                _progresState.value = false
-            } catch (e: Exception) {
-                _progresState.value = false
-            }
-        }
-    }
-
-    fun getListAppointment() {
-        viewModelScope.launch {
-            _progresState.value = true
-            try {
-                _listAppointment.value = appointmentRepository.getListAppointment()
-                _progresState.value = false
-            } catch (e: Exception) {
-                _progresState.value = false
-            }
-
-        }
-    }
-
-    fun getAppointmentById(id: Int): Appointment {
-        lateinit var appoint : Appointment
-        viewModelScope.launch {
-            try {
-                appoint = appointmentRepository.getOneAppointment(id)
             } catch (e: Exception) {
                 Log.d("error: ", e.toString())
             }
         }
-        return appoint
+    }
+
+    fun getAllAppointment() {
+
+        viewModelScope.launch {
+            try {
+                _listAppointment.value = appointmentRepository.getAllAppointment()
+            }  catch (e: Exception) {
+                Log.d("error: ", e.toString())
+            }
+        }
     }
 
     fun updateAppointment(appointment: Appointment) {
         viewModelScope.launch {
             try {
-                appointmentRepository.updateRepositoy(appointment)
+                appointmentRepository.updateAppointment(appointment)
+            } catch (e: Exception) {
+                Log.d("error: ", e.toString())
+            }
+        }
+    }
+
+    fun deleteAppointment(appointment: Appointment) {
+        viewModelScope.launch {
+            try {
+                appointmentRepository.deleteAppointment(appointment)
             } catch (e: Exception) {
                 Log.d("error: ", e.toString())
             }

@@ -18,13 +18,14 @@ import com.example.project1.viewmodel.AppointmentViewModel
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
-    private val appointmentViewModel: AppointmentViewModel by viewModels()
+    private val app: AppointmentViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater)
         binding.lifecycleOwner = this
+        Log.d("Lista de citas:", app.getAllAppointment().toString())
         return binding.root
     }
 
@@ -58,8 +59,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun observerListAppointment(){
-        appointmentViewModel.listAppointment
-        appointmentViewModel.listAppointment.observe(viewLifecycleOwner){ listAppointment ->
+        app.listAppointment
+        app.listAppointment.observe(viewLifecycleOwner){ listAppointment ->
             val recycler = binding.recyclerview
             val layoutManager = LinearLayoutManager(context)
             recycler.layoutManager = layoutManager
@@ -70,7 +71,7 @@ class HomeFragment : Fragment() {
         }
     }
     private fun observerProgress(){
-        appointmentViewModel.progresState.observe(viewLifecycleOwner){status ->
+        app.progresState.observe(viewLifecycleOwner){status ->
             binding.progress.isVisible = status
     }
     }
