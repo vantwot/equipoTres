@@ -1,15 +1,17 @@
 package com.example.project1.view.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.project1.R
-import com.example.project1.databinding.FragmentEditAppointmentBinding
 import com.example.project1.databinding.FragmentHomeBinding
 import com.example.project1.view.adapter.AppointmentAdapter
 import com.example.project1.viewmodel.AppointmentViewModel
@@ -31,23 +33,32 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         controladores()
         observadorViewModel()
-
+        val callback = object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                activity?.moveTaskToBack(true)
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
     private fun controladores() {
         binding.button1.setOnClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_createFragment)
+            try {
+                Log.e("Exito","It works")
+                findNavController().navigate(R.id.action_homeFragment_to_createFragment)
+            } catch(e: Exception) {
+                Log.e("Error","Navegación fallida",e)
+            }
         }
 
     }
 
     private fun observadorViewModel(){
         observerListAppointment()
-        //observerProgress()
+        observerProgress()
     }
 
     private fun observerListAppointment(){
-
         appointmentViewModel.listAppointment
         appointmentViewModel.listAppointment.observe(viewLifecycleOwner){ listAppointment ->
             val recycler = binding.recyclerview
@@ -59,11 +70,11 @@ class HomeFragment : Fragment() {
 
         }
     }
-   // private fun observerProgress(){
-       // appointmentViewModel.progresState.observe(viewLifecycleOwner){status ->
-            //binding.progress.isVisible = status
-    //}
-   // }
+    private fun observerProgress(){
+        appointmentViewModel.progresState.observe(viewLifecycleOwner){status ->
+            binding.progress.isVisible = status
+    }
+    }
 
 }
 

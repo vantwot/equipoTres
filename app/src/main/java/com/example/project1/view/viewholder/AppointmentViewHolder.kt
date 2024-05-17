@@ -7,7 +7,6 @@ import com.example.project1.R
 import com.example.project1.databinding.CardAppointmentBinding
 import com.example.project1.model.Appointment
 
-
 class AppointmentViewHolder(binding: CardAppointmentBinding, navController: NavController) :
     RecyclerView.ViewHolder(binding.root) {
     val bindingAppointment = binding
@@ -20,7 +19,7 @@ class AppointmentViewHolder(binding: CardAppointmentBinding, navController: NavC
         bindingAppointment.itemCardView.setOnClickListener {
             val bundle = Bundle()
             bundle.putSerializable("clave", appointment)
-            //navController.navigate(R.id.action_homeFragment_to_detailFragment, bundle)
+            navController.navigate(R.id.action_homeFragment_to_detailFragment, bundle)
         }
 
     }

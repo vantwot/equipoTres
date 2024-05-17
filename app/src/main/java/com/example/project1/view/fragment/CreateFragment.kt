@@ -167,7 +167,7 @@ class CreateFragment : Fragment() {
     }
 
     private fun setToolbar (){
-        val toolbar : Toolbar = binding.contentToolbar.findViewById(R.id.toolbar_edit)
+        val toolbar : Toolbar = binding.contentToolbar.toolbarEdit
         toolbar.setNavigationOnClickListener {
             // Navegar a otro fragmento cuando se hace clic en el icono de navegación
             findNavController().navigate(R.id.action_createFragment_to_homeFragment)
@@ -233,10 +233,7 @@ class CreateFragment : Fragment() {
 
     private fun createAppointment() {
         // Get updated appointment data from EditTexts
-        val createdName = field_name.text.toString()
         val createBreed = field_breed.text.toString()
-        val createdOwner = field_owner.text.toString()
-        val createdTelephone = field_tel.text.toString()
 
         try{lifecycleScope.launch {
             if (opcion != "Síntomas") {
