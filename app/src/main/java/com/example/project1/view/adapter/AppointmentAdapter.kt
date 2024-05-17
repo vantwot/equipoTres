@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.project1.databinding.CardAppointmentBinding
-import com.example.project1.databinding.FragmentCreateBinding
 import com.example.project1.model.Appointment
 import com.example.project1.view.viewholder.AppointmentViewHolder
 
