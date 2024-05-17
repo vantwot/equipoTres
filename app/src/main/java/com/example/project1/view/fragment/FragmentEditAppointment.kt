@@ -85,10 +85,7 @@ class FragmentEditAppointment : Fragment() {
         validateData()
         btnEdit.setOnClickListener {
             try {
-                progressBar.visibility = View.VISIBLE
                 getImage(field_breed.text.toString())
-                progressBar.visibility = View.INVISIBLE
-                updateAppointment()
             } catch(e: Exception) {
                 Log.d("error",e.toString())
                 Toast.makeText(requireContext(), ERROR_MESSAGE, Toast.LENGTH_SHORT).show()
@@ -113,16 +110,29 @@ class FragmentEditAppointment : Fragment() {
     }
 
     private fun getImage (breed : String) {
-        val retrofitBring = RetrofitClient.consumeApi.getRandomDogImage(breed)
-        retrofitBring.enqueue(object : Callback<ImagenResponse>{
-            override fun onResponse(call: Call<ImagenResponse>, response: Response<ImagenResponse>) {
-                val image_breed = response.body()?.message ?: ""
-                photo = image_breed
-            }
-            override fun onFailure(call: Call<ImagenResponse>, t: Throwable) {
-                Toast.makeText(requireContext(), ERROR_MESSAGE, Toast.LENGTH_SHORT).show()
-            }
-        })
+        try {
+            progressBar.visibility = View.VISIBLE
+            val retrofitBring = RetrofitClient.consumeApi.getRandomDogImage(breed)
+            retrofitBring.enqueue(object : Callback<ImagenResponse> {
+                override fun onResponse(
+                    call: Call<ImagenResponse>,
+                    response: Response<ImagenResponse>
+                ) {
+                    val image_breed = response.body()?.message ?: ""
+                    photo = image_breed
+                    updateAppointment()
+                    progressBar.visibility = View.INVISIBLE
+                }
+
+                override fun onFailure(call: Call<ImagenResponse>, t: Throwable) {
+                    Toast.makeText(requireContext(), ERROR_MESSAGE, Toast.LENGTH_SHORT).show()
+                    progressBar.visibility = View.VISIBLE
+                }
+            })
+        } catch (e:Exception){
+            Log.d("error: ", e.toString())
+            Toast.makeText(requireContext(), ERROR_MESSAGE, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun setupAutoCompleteTextView(breedList: List<String>) {
