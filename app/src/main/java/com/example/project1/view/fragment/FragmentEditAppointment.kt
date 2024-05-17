@@ -85,15 +85,32 @@ class FragmentEditAppointment : Fragment() {
         validateData()
         btnEdit.setOnClickListener {
             try {
-                getImage(field_breed.text.toString())
+                if (receivedAppointment.breed != field_breed.text.toString()) {
+                    getImage(field_breed.text.toString()) { imageUrl ->
+                        updateAppointment(imageUrl)
+                    }
+                } else {
+                    updateAppointment(receivedAppointment.photo) // Usa la foto existente si la raza no cambia
+                }
             } catch(e: Exception) {
-                Log.d("error",e.toString())
+                Log.d("error", e.toString())
                 Toast.makeText(requireContext(), ERROR_MESSAGE, Toast.LENGTH_SHORT).show()
-
             }
         }
-
     }
+
+//    private fun controladores() {
+//        validateData()
+//        btnEdit.setOnClickListener {
+//            try {
+//                getImage(field_breed.text.toString())
+//            } catch(e: Exception) {
+//                Log.d("error",e.toString())
+//                Toast.makeText(requireContext(), ERROR_MESSAGE, Toast.LENGTH_SHORT).show()
+//
+//            }
+//        }
+//    }
 
     private fun getBreeds (){
         val retrofitBring = RetrofitClient.consumeApi.getBring()
@@ -109,31 +126,57 @@ class FragmentEditAppointment : Fragment() {
         })
     }
 
-    private fun getImage (breed : String) {
+    private fun getImage(breed: String, callback: (String?) -> Unit) {
         try {
             progressBar.visibility = View.VISIBLE
             val retrofitBring = RetrofitClient.consumeApi.getRandomDogImage(breed)
             retrofitBring.enqueue(object : Callback<ImagenResponse> {
-                override fun onResponse(
-                    call: Call<ImagenResponse>,
-                    response: Response<ImagenResponse>
-                ) {
-                    val image_breed = response.body()?.message ?: ""
-                    photo = image_breed
-                    updateAppointment()
-                    progressBar.visibility = View.INVISIBLE
+                override fun onResponse(call: Call<ImagenResponse>, response: Response<ImagenResponse>) {
+                    progressBar.visibility = View.GONE
+                    val imageBreed = response.body()?.message
+                    callback(imageBreed)
                 }
 
                 override fun onFailure(call: Call<ImagenResponse>, t: Throwable) {
+                    progressBar.visibility = View.GONE
                     Toast.makeText(requireContext(), ERROR_MESSAGE, Toast.LENGTH_SHORT).show()
-                    progressBar.visibility = View.VISIBLE
+                    callback(null)
                 }
             })
-        } catch (e:Exception){
+        } catch (e: Exception) {
+            progressBar.visibility = View.GONE
             Log.d("error: ", e.toString())
             Toast.makeText(requireContext(), ERROR_MESSAGE, Toast.LENGTH_SHORT).show()
+            callback(null)
         }
     }
+
+
+//    private fun getImage (breed : String) {
+//        try {
+//            progressBar.visibility = View.VISIBLE
+//            val retrofitBring = RetrofitClient.consumeApi.getRandomDogImage(breed)
+//            retrofitBring.enqueue(object : Callback<ImagenResponse> {
+//                override fun onResponse(
+//                    call: Call<ImagenResponse>,
+//                    response: Response<ImagenResponse>
+//                ) {
+//                    val image_breed = response.body()?.message ?: ""
+//                    photo = image_breed
+//                    updateAppointment()
+//                    progressBar.visibility = View.INVISIBLE
+//                }
+//
+//                override fun onFailure(call: Call<ImagenResponse>, t: Throwable) {
+//                    Toast.makeText(requireContext(), ERROR_MESSAGE, Toast.LENGTH_SHORT).show()
+//                    progressBar.visibility = View.VISIBLE
+//                }
+//            })
+//        } catch (e:Exception){
+//            Log.d("error: ", e.toString())
+//            Toast.makeText(requireContext(), ERROR_MESSAGE, Toast.LENGTH_SHORT).show()
+//        }
+//    }
 
     private fun setupAutoCompleteTextView(breedList: List<String>) {
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, breedList)
@@ -195,11 +238,11 @@ class FragmentEditAppointment : Fragment() {
         field_tel.setText(receivedAppointment.phone_number)
     }
 
-    private fun updateAppointment() {
+    private fun updateAppointment(imageUrl: String?) {
         try {
             // Get updated appointment data from EditTexts
             val idApp = receivedAppointment.id
-            val photoAppointment = photo
+            val photoAppointment = imageUrl ?: receivedAppointment.photo
             val updatedName = field_name.text.toString()
             val updatedBreed = field_breed.text.toString()
             val updatedOwner = field_owner.text.toString()
