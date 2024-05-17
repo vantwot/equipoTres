@@ -39,6 +39,7 @@ class FragmentDateDetail : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.cardImage.bringToFront()
         controladores()
         catchIncomingData()
     }
@@ -74,10 +75,11 @@ class FragmentDateDetail : Fragment() {
         Glide.with(this)
             .load(receivedAppointment.photo)
             .into(binding.petBreedImage)
+        binding.numberAppointmnet.text = "#${receivedAppointment.id.toString()}"
         binding.titleTextDetailsName.text = receivedAppointment.name_pet
         binding.petBreedName.text = receivedAppointment.breed
-        binding.ownerPhone.text = receivedAppointment.phone_number
-        binding.ownerName.text = receivedAppointment.name_owner
+        binding.ownerPhone.text = "Telefono: ${receivedAppointment.phone_number}"
+        binding.ownerName.text = "Propietario: ${receivedAppointment.name_owner}"
         binding.petSymptoms.text = receivedAppointment.symptoms
     }
 
