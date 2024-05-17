@@ -11,8 +11,9 @@ import androidx.room.OnConflictStrategy
 
 @Dao
 interface AppointmentDao {
+
     @Query("SELECT * FROM Appointment")
-    fun getAllAppointment(): MutableList<Appointment>
+    suspend fun getAllAppointment(): MutableList<Appointment>
 
     @Query("SELECT * FROM Appointment WHERE id = :id")
     suspend fun getAppointmentById(id: Int): Appointment

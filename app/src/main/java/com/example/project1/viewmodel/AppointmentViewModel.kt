@@ -33,16 +33,17 @@ class AppointmentViewModel (application: Application) : AndroidViewModel(applica
         }
     }
 
-    fun getListAppointment() {
+    fun getAllAppointment() {
+
         viewModelScope.launch {
             _progresState.value = true
+
             try {
-                _listAppointment.value = appointmentRepository.getListAppointment()
+                _listAppointment.value = appointmentRepository.getAllAppointment()
                 _progresState.value = false
-            } catch (e: Exception) {
+            }  catch (e: Exception) {
                 _progresState.value = false
             }
-
         }
     }
 

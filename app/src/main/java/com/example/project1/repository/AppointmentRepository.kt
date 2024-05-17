@@ -24,8 +24,8 @@ class AppointmentRepository (val context: Context) {
         return appointment
     }
 
-    suspend fun getListAppointment():MutableList<Appointment>{
-        return withContext(Dispatchers.IO){
+    suspend fun getAllAppointment(): MutableList<Appointment> {
+        return withContext(Dispatchers.IO) {
             appointmentDao.getAllAppointment()
         }
     }
