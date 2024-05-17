@@ -75,7 +75,7 @@ class FragmentDateDetail : Fragment() {
         Glide.with(this)
             .load(receivedAppointment.photo)
             .into(binding.petBreedImage)
-        binding.numberAppointmnet.text = receivedAppointment.id.toString()
+        binding.numberAppointmnet.text = "#${receivedAppointment.id.toString()}"
         binding.titleTextDetailsName.text = receivedAppointment.name_pet
         binding.petBreedName.text = receivedAppointment.breed
         binding.ownerPhone.text = "Telefono: ${receivedAppointment.phone_number}"
