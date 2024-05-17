@@ -62,8 +62,5 @@ class LoginFragment : Fragment() {
             viewModel.handleFingerClick(requireContext())
         }
     }
-
-
 }
-
 

@@ -10,7 +10,7 @@
               <deviceKey>
                 <Key>
                   <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="$USER_HOME$/.android/avd/Pixel_3_API_29.avd" />
+                  <value value="$USER_HOME$/.android/avd/Medium_Phone_API_34.avd" />
                 </Key>
               </deviceKey>
             </Target>

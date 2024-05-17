@@ -19,7 +19,6 @@ import com.example.project1.viewmodel.AppointmentViewModel
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private val appointmentViewModel: AppointmentViewModel by viewModels()
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -77,5 +76,3 @@ class HomeFragment : Fragment() {
     }
 
 }
-
-

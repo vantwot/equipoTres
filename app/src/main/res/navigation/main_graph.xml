@@ -53,5 +53,4 @@
             android:id="@+id/action_detailFragment_to_editAppointmentFragment"
             app:destination="@id/editAppointmentFragment" />
     </fragment>
-
 </navigation>
