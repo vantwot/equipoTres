@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
@@ -32,6 +33,7 @@ import com.example.project1.databinding.FragmentCreateBinding
 import com.example.project1.retrofit.Breed
 import com.example.project1.retrofit.RetrofitClient
 import com.example.project1.model.Appointment
+import com.example.project1.retrofit.ImagenResponse
 import com.example.project1.room.AppointmentApp
 import com.example.project1.viewmodel.AppointmentViewModel
 import kotlinx.coroutines.launch
@@ -114,6 +116,43 @@ class CreateFragment : Fragment() {
             }
         })
     }
+
+    private fun getPhoto (raza : String){
+        // Get updated appointment data from EditTexts
+        val createdName = field_name.text.toString()
+        val createdOwner = field_owner.text.toString()
+        val createdTelephone = field_tel.text.toString()
+        val retrofitBring = RetrofitClient.consumeApi.getRandomDogImage(raza)
+        var razaImageView = ""
+        retrofitBring.enqueue(object : Callback<ImagenResponse> {
+            override fun onResponse(
+                call: Call<ImagenResponse>,
+                response: Response<ImagenResponse>
+            ) {
+                razaImageView = response.body()?.message ?: ""
+                if (razaImageView == "Breed not found (master breed does not exist)") {razaImageView = ""}
+                Log.d("AHHHHHHHHHHHHHHHHH", razaImageView)
+                val createAppointment = Appointment(
+                    photo = razaImageView,
+                    name_pet = createdName,
+                    breed = raza,
+                    name_owner = createdOwner,
+                    phone_number = createdTelephone,
+                    symptoms = opcion
+                )
+                // Create the appointment in the database
+                app.insertAppointment(createAppointment)
+                // Navigate to previous Detail Fragment
+                findNavController().navigate(R.id.action_createFragment_to_homeFragment)
+
+            }
+            override fun onFailure(call: Call<ImagenResponse>, t: Throwable) {
+                Log.d("entro en error: ", ERROR_MESSAGE)
+                Toast.makeText(requireContext(), ERROR_MESSAGE, Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
     private fun setupAutoCompleteTextView(breedList: List<String>) {
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, breedList)
         (binding.editTextBreed as? AutoCompleteTextView)?.apply {
@@ -201,17 +240,7 @@ class CreateFragment : Fragment() {
 
         try{lifecycleScope.launch {
             if (opcion != "Síntomas") {
-                val createAppointment = Appointment(
-                    name_pet = createdName,
-                    breed = createBreed,
-                    name_owner = createdOwner,
-                    phone_number = createdTelephone,
-                    symptoms = opcion
-                )
-                // Create the appointment in the database
-                app.insertAppointment(createAppointment)
-                // Navigate to previous Detail Fragment
-                findNavController().navigate(R.id.action_createFragment_to_homeFragment)
+                getPhoto(createBreed)
             } else {
                 showSymptomSelectionDialog(requireContext())
             }

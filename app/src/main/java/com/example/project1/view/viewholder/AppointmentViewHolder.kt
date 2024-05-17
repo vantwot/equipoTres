@@ -20,7 +20,7 @@ class AppointmentViewHolder(binding: CardAppointmentBinding, navController: NavC
         bindingAppointment.itemCardView.setOnClickListener {
             val bundle = Bundle()
             bundle.putSerializable("clave", appointment)
-            navController.navigate(R.id.action_homeFragment_to_detailFragment, bundle)
+            //navController.navigate(R.id.action_homeFragment_to_detailFragment, bundle)
         }
 
     }

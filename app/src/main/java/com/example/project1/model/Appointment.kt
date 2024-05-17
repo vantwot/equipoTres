@@ -9,6 +9,7 @@ import java.io.Serializable
 data class Appointment (
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null,
+    val photo: String,
     val name_pet: String,
     val breed: String,
     val name_owner: String,
