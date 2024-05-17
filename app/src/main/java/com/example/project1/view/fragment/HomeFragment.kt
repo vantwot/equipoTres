@@ -26,6 +26,7 @@ class HomeFragment : Fragment() {
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater)
         binding.lifecycleOwner = this
+        Log.d("Lista de citas:", app.getAllAppointment().toString())
         return binding.root
     }
 
