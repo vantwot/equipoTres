@@ -19,12 +19,14 @@ import com.example.project1.viewmodel.AppointmentViewModel
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private val appointmentViewModel: AppointmentViewModel by viewModels()
+    private val app: AppointmentViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater)
         binding.lifecycleOwner = this
+        Log.d("Lista de citas:", app.getAllAppointment().toString())
         return binding.root
     }
 
