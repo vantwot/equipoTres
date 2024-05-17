@@ -17,6 +17,7 @@ import com.example.project1.viewmodel.LoginViewModel
 
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
+
     private val binding get() = _binding!!
 
     private val viewModel: LoginViewModel by viewModels()
@@ -61,6 +62,5 @@ class LoginFragment : Fragment() {
             viewModel.handleFingerClick(requireContext())
         }
     }
-
-
 }
+
