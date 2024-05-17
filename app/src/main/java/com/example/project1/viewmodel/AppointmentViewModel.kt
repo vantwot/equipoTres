@@ -23,12 +23,10 @@ class AppointmentViewModel (application: Application) : AndroidViewModel(applica
 
     fun insertAppointment(appointment: Appointment) {
         viewModelScope.launch {
-            _progresState.value = true
             try {
                 appointmentRepository.insertAppointment(appointment)
-                _progresState.value = false
             } catch (e: Exception) {
-                _progresState.value = false
+                Log.d("error: ", e.toString())
             }
         }
     }
@@ -36,13 +34,10 @@ class AppointmentViewModel (application: Application) : AndroidViewModel(applica
     fun getAllAppointment() {
 
         viewModelScope.launch {
-            _progresState.value = true
-
             try {
                 _listAppointment.value = appointmentRepository.getAllAppointment()
-                _progresState.value = false
             }  catch (e: Exception) {
-                _progresState.value = false
+                Log.d("error: ", e.toString())
             }
         }
     }
@@ -62,7 +57,17 @@ class AppointmentViewModel (application: Application) : AndroidViewModel(applica
     fun updateAppointment(appointment: Appointment) {
         viewModelScope.launch {
             try {
-                appointmentRepository.updateRepositoy(appointment)
+                appointmentRepository.updateAppointment(appointment)
+            } catch (e: Exception) {
+                Log.d("error: ", e.toString())
+            }
+        }
+    }
+
+    fun deleteAppointment(appointment: Appointment) {
+        viewModelScope.launch {
+            try {
+                appointmentRepository.deleteAppointment(appointment)
             } catch (e: Exception) {
                 Log.d("error: ", e.toString())
             }

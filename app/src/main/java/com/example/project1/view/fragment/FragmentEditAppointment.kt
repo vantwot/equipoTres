@@ -58,7 +58,6 @@ class FragmentEditAppointment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentEditAppointmentBinding.inflate(inflater, container, false)
-
         // Asignación de variables
         field_name = binding.editTextName
         field_breed = binding.editTextBreed
