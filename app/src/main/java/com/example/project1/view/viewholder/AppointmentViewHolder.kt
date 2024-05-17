@@ -18,7 +18,7 @@ class AppointmentViewHolder(binding: CardAppointmentBinding, navController: NavC
     val navController = navController
     fun setCardAppointment(appointment: Appointment) {
         bindingAppointment.petNamev.text = appointment.name_pet
-        bindingAppointment.petId.text = appointment.id.toString();
+        bindingAppointment.petId.text = "#${appointment.id.toString()}"
         bindingAppointment.petSimto.text = appointment.symptoms
         // Cargar la imagen desde la URL y aplicar la transformación CircleCrop
         Glide.with(bindingAppointment.root.context)
