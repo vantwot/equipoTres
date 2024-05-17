@@ -88,7 +88,6 @@
             android:layout_height="0dp"
             android:layout_margin="10dp"
             android:background="@drawable/date_detail_card"
-            android:elevation="3dp"
             android:orientation="vertical"
             android:padding="15dp"
             app:layout_constraintTop_toTopOf="@+id/guideline3"
